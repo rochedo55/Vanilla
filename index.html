@@ -67,12 +67,52 @@
             <button class="add-transaction" onclick="showAddTransaction()">
                 <i class="fas fa-plus"></i>
             </button>
-            <button class="add-revenue">
+            <button class="add-revenue" onclick="openModalRevenue()">
                 <i class="fas fa-hand-holding-usd"></i>
             </button>
-            <button class="add-expense">
+            <button class="add-expense" onclick="openModalExpense()">
                 <i class="fas fa-receipt"></i>
             </button>
+            
+            <div id="myModal1" class="modal">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                            <h2>Adicionar Receita</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p>Adicione o titulo da receita</p>
+                        <input type="text" id="myInput" placeholder="Titulo...">
+                        <p>Adicione o valor da receita</p>
+                        <input type="text" id="myInput" placeholder="Valor...">
+                    </div>
+                    <div class="modal-footer">
+                        <button style="cursor: pointer;">adicionar</button>
+                    </div>
+                </div>
+              
+            </div>
+            <div id="myModal2" class="modal">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                            <h2>Adicionar Despesa</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p>Adicionar o titulo da despesa</p>
+                        <input type="text" id="myInput" placeholder="Titulo...">
+                        <p>Adicione o valor da despesa</p>
+                        <input type="text" id="myInput" placeholder="Valor...">
+                    </div>
+                    <div class="modal-footer">
+                        <button style="cursor: pointer;">adicionar</button>
+                    </div>
+                </div>
+              
+            </div>
+        
         </div>
         <div class="sidemenu">
             <ul class="sidemenu-options">
