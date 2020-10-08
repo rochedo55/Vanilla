@@ -18,7 +18,7 @@
                     </div>
                     <div class="mini-card-body">
                         <label class="mini-card-title">Saldo atual</label>
-                        <span>R$ 123</span>
+                        <span id="currentBalance">R$ 0</span>
                     </div>                    
                 </div>
                 <div class="mini-card  revenue">
@@ -27,7 +27,7 @@
                     </div>                    
                     <div class="mini-card-body">
                         <label class="mini-card-title">Receitas</label>
-                        <span>R$ 123</span>
+                        <span id="revenuesSum">R$ 0</span>
                     </div>                    
                 </div>
                 <div class="mini-card expense">
@@ -36,7 +36,7 @@
                     </div>                    
                     <div class="mini-card-body">
                         <label class="mini-card-title">Despesas</label>
-                        <span>R$ 123</span>
+                        <span id="expensesSum">R$ 0</span>
                     </div>                 
                 </div>
                 <div class="mini-card profit">
@@ -45,7 +45,7 @@
                     </div>                    
                     <div class="mini-card-body">
                         <label class="mini-card-title">Balanço</label>
-                        <span>R$ 123</span>
+                        <span id="">R$ 0</span>
                     </div>                          
                 </div>
             </div>
@@ -74,40 +74,48 @@
                 <i class="fas fa-receipt"></i>
             </button>
             
-            <div id="myModal1" class="modal">
+            <div id="modalAddRevenue" class="modal">
 
-                <div class="modal-content">
+                <div class="modal-content revenue">
                     <div class="modal-header">
+                        <h2>Adicionar Receita</h2>
                         <span class="close">&times;</span>
-                            <h2>Adicionar Receita</h2>
                     </div>
                     <div class="modal-body">
-                        <p>Adicione o titulo da receita</p>
-                        <input type="text" id="myInput" placeholder="Titulo...">
-                        <p>Adicione o valor da receita</p>
-                        <input type="text" id="myInput" placeholder="Valor...">
+                        <div class="form-group">
+                            <p>Adicione o titulo da receita</p>
+                            <input type="text" id="tituloReceita" placeholder="Titulo...">
+                        </div>
+                        <div class="form-group">
+                            <p>Adicione o valor da receita</p>
+                            <input type="number" id="valorReceita" placeholder="Valor...">
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button style="cursor: pointer;">adicionar</button>
+                        <button class="add" id="btnAddReceita">Adicionar</button>
                     </div>
                 </div>
               
             </div>
-            <div id="myModal2" class="modal">
+            <div id="modalAddExpense" class="modal">
 
-                <div class="modal-content">
+                <div class="modal-content expense">
                     <div class="modal-header">
+                        <h2>Adicionar Despesa</h2>
                         <span class="close">&times;</span>
-                            <h2>Adicionar Despesa</h2>
                     </div>
                     <div class="modal-body">
-                        <p>Adicionar o titulo da despesa</p>
-                        <input type="text" id="myInput" placeholder="Titulo...">
-                        <p>Adicione o valor da despesa</p>
-                        <input type="text" id="myInput" placeholder="Valor...">
+                        <div class="form-group">
+                            <p>Adicionar o titulo da despesa</p>
+                            <input type="text" id="titleExpense" placeholder="Titulo...">
+                        </div>
+                        <div class="form-group">
+                            <p>Adicione o valor da despesa</p>
+                            <input type="number" id="valueExpense" placeholder="Valor...">
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button style="cursor: pointer;">adicionar</button>
+                        <button class="add" id="btnAddExpense">Adicionar</button>
                     </div>
                 </div>
               

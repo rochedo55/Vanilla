@@ -1,35 +1,80 @@
-
+var revenues = [];
+var expenses = [];
 
 function showAddTransaction() {
     document.querySelector('.add-expense').classList.toggle('show');
     document.querySelector('.add-revenue').classList.toggle('show');
 }
 
-const modal1 = document.getElementById("myModal1")
-const modal2 = document.getElementById("myModal2")
+const modalAddRevenue = document.getElementById("modalAddRevenue")
+const modalAddExpense = document.getElementById("modalAddExpense")
 
 const span1 = document.getElementsByClassName("close")[0];
 const span2 = document.getElementsByClassName("close")[1];
 
+const titleRevenue = document.getElementById("tituloReceita");
+const valueRevenue = document.getElementById("valorReceita");
+const titleExpense = document.getElementById("titleExpense");
+const valueExpense = document.getElementById("valueExpense");
+
+const expensesSum = document.getElementById("expensesSum");
+const revenuesSum = document.getElementById("revenuesSum");
+const currentBalance = document.getElementById("currentBalance");
+
 function openModalRevenue(){
-    modal1.style.display = "block";
+    modalAddRevenue.style.display = "block";
 }
 
 function openModalExpense(){
-    modal2.style.display = "block";
+    modalAddExpense.style.display = "block";
 }
 
 span1.onclick = function() {
-    modal1.style.display = "none";
+    modalAddRevenue.style.display = "none";
 }
 
 span2.onclick = function() {
-    modal2.style.display = "none";
+    modalAddExpense.style.display = "none";
 }
 
-window.onclick = function(event) {
-    if (event.target == modal1 || event.target == modal2) {
-      modal1.style.display = "none";
-      modal2.style.display = "none";
-    }
+function calculateStatistics() {
+    let sumRevenues = 0;
+    let sumExpenses = 0;
+
+    revenues.forEach(revenue => {
+        sumRevenues += revenue.value
+    });
+
+    expenses.forEach(expense => {
+        sumExpenses += expense.value
+    });
+
+    currentBalance.innerHTML = `R$ ${sumRevenues - sumExpenses}`;
+    expensesSum.innerHTML = `R$ ${sumExpenses}`;
+    revenuesSum.innerHTML = `R$ ${sumRevenues}`;
+}
+
+document.getElementById("btnAddReceita").onclick = function() {    
+    revenues.push({
+        title: titleRevenue.value,
+        value: parseFloat(valueRevenue.value)
+    });
+
+    calculateStatistics();
+    titleRevenue.value = "";
+    valueRevenue.value = "";
+    modalAddRevenue.style.display = "none";
+}
+
+
+document.getElementById("btnAddExpense").onclick = function() {
+    expenses.push({
+        title: titleExpense.value,
+        value: parseFloat(valueExpense.value)
+    });
+
+    calculateStatistics();
+    titleExpense.value = "";
+    valueExpense.value = "";
+    modalAddExpense.style.display = "none";
 }
