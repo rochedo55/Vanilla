@@ -1,0 +1,22 @@
+{
+  "name": "vanilla",
+  "version": "1.0.0",
+  "description": "## projeto de interface simplificada usando apenas HTML, CSS e JS para o projeto [Personal-finances](https://github.com/rochedo55/personal-finances)",
+  "main": "index.js",
+  "scripts": {
+  "start": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rochedo55/Vanilla.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rochedo55/Vanilla/issues"
+  },
+  "homepage": "https://github.com/rochedo55/Vanilla#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
