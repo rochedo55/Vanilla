@@ -4,7 +4,7 @@
   "description": "## projeto de interface simplificada usando apenas HTML, CSS e JS para o projeto [Personal-finances](https://github.com/rochedo55/personal-finances)",
   "main": "index.js",
   "scripts": {
-  "start": "node src/app.js"
+    "start": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,13 @@
   },
   "homepage": "https://github.com/rochedo55/Vanilla#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "lowdb": "^1.0.0",
+    "pug": "^3.0.0",
+    "uuid": "^8.3.1",
+    "uuidv4": "^6.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }

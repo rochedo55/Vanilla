@@ -35,6 +35,12 @@ button:focus {
     height: 60px;
     background-color: #ffffff;
     border-bottom: 3px solid #b5b5b5;
+    display: flex;
+    align-items: center;
+}
+
+.header img {
+    padding-left: 50px;
 }
 
 
@@ -346,4 +352,65 @@ input {
     margin: 10px 0;
     color: #fff;
     font-size: 14px;
+}
+
+
+
+.expense-title {
+    font-size: 32px !important;
+}
+
+table.expenses-list {
+    width: 100%;
+    border-spacing: 15px;
+}
+
+table.expenses-list thead {
+
+}
+
+table.expenses-list tbody tr {
+    
+}
+
+table.expenses-list tbody tr td.expense-item-date {
+    color: rgba(0,0,0,0.60);
+    text-align: center;
+}
+
+table.expenses-list tbody tr td.expense-item-name span {
+    font-size: 12px;
+}
+
+table.expenses-list tbody tr td.expense-item-value {
+    color:  #f24331;
+    text-align: center;
+}
+
+.revenue-title {
+    font-size: 36px;
+}
+
+table.revenue-list {
+    width: 100%;
+    border-spacing: 15px;
+}
+
+table.revenue-list thead {
+
+}
+
+table.revenue-list tbody tr td.revenue-item-date {
+    color: rgba(0,0,0,0.60);
+    text-align: center;
+}
+
+table.revenue-list tbody tr td.revenue-item-name span {
+    color: rgba(0,0,0,0.30);
+    font-size: 12px;
+}
+
+table.revenue-list tbody tr td.revenue-item-value {
+    color:  #4cae51;
+    text-align: center;
 }

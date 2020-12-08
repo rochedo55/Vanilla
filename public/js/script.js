@@ -14,8 +14,11 @@ const span2 = document.getElementsByClassName("close")[1];
 
 const titleRevenue = document.getElementById("tituloReceita");
 const valueRevenue = document.getElementById("valorReceita");
+const formRevenue  = document.getElementById("revenueForm");
+
 const titleExpense = document.getElementById("titleExpense");
 const valueExpense = document.getElementById("valueExpense");
+const formExpense = document.getElementById("expenseForm");
 
 const expensesSum = document.getElementById("expensesSum");
 const revenuesSum = document.getElementById("revenuesSum");
@@ -54,27 +57,39 @@ function calculateStatistics() {
     revenuesSum.innerHTML = `R$ ${sumRevenues}`;
 }
 
-document.getElementById("btnAddReceita").onclick = function() {    
-    revenues.push({
-        title: titleRevenue.value,
-        value: parseFloat(valueRevenue.value)
-    });
+document.getElementById("btnAddReceita").onclick = function(e) {    
+    e.preventDefault();
 
-    calculateStatistics();
-    titleRevenue.value = "";
-    valueRevenue.value = "";
+    if (titleRevenue.value === "" || valueRevenue.value === "") {
+        alert("Todos os campos são obrigatórios");
+        return;
+    }
+
+    if (Number(valueRevenue.value) <= 0) {
+        alert("Por favor insira um valor válido para receita");
+        return;
+    }
+
+    formRevenue.submit();
+
     modalAddRevenue.style.display = "none";
 }
 
 
-document.getElementById("btnAddExpense").onclick = function() {
-    expenses.push({
-        title: titleExpense.value,
-        value: parseFloat(valueExpense.value)
-    });
+document.getElementById("btnAddExpense").onclick = function(e) {
+    e.preventDefault();
 
-    calculateStatistics();
-    titleExpense.value = "";
-    valueExpense.value = "";
+    if (titleExpense.value === "" || valueExpense.value === "") {
+        alert("Todos os campos são obrigatórios");
+        return;
+    }
+
+    if (Number(valueExpense.value) <= 0) {
+        alert("Por favor insira um valor válido para receita");
+        return;
+    }
+
+    formExpense.submit();
+
     modalAddExpense.style.display = "none";
 }

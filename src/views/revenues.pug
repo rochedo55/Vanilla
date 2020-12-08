@@ -1,0 +1,70 @@
+doctype html  
+html
+    head
+        title Receitas
+        link(href="/static/css/fontawesome.min.css" rel="stylesheet")
+        link(href="/static/css/style.css" rel="stylesheet")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous")
+        script(src="/static/js/date.utils.js")
+    body
+        include layouts/header.pug
+        include layouts/sidemenu.pug
+
+        div.inner
+            div.card
+                h2.card-title.revenue-title Receitas
+
+                canvas#revenues-chart
+
+                table.revenue-list
+                    thead
+                        tr
+                            th Data
+                            th Receita
+                            th Valor
+                    tbody
+                        each revenue in revenues
+                            tr
+                                td.revenue-item-date
+                                    script.
+                                        document.write(getFormatedDate("#{revenue.date}"));
+                                td.revenue-item-name= revenue.title
+                                td.revenue-item-value= "R$ " + revenue.value 
+        
+        script.
+            var revenues = !{JSON.stringify(revenues)};
+            var revenuesByDate = {};
+
+            for(let revenue of revenues) {
+                let key = getFormatedDate(revenue.date);
+
+                if (!revenuesByDate[key]) {
+                    revenuesByDate[key] = revenue.value;
+                } else {
+                    revenuesByDate[key] += revenue.value;
+                }
+            }
+
+            var revenuesByDateSorted = Object.keys(revenuesByDate).sort(compareDates).map(key => [key, revenuesByDate[key]]);
+
+            var ctx = document.getElementById("revenues-chart");
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: revenuesByDateSorted.map(revenue => revenue[0]),
+                    datasets: [{
+                        label: "Receita por data",
+                        data: revenuesByDateSorted.map(revenue => revenue[1]),
+                        backgroundColor: 'rgba(50, 168, 82, 0.4)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });

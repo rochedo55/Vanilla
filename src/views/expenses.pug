@@ -1,0 +1,73 @@
+doctype html  
+html
+    head
+        title Despesas
+        link(href="/static/css/fontawesome.min.css" rel="stylesheet")
+        link(href="/static/css/style.css" rel="stylesheet")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous")
+        script(src="/static/js/date.utils.js")
+    body
+        include layouts/header.pug
+        include layouts/sidemenu.pug
+
+        div.inner
+            div.card
+                h2.card-title.expense-title Despesas
+
+                canvas#expenses-chart
+
+                table.expenses-list
+                    thead
+                        tr
+                            th Data
+                            th Despesa
+                            th Valor
+                    tbody
+                        each expense in expenses
+                            tr
+                                td.expense-item-date 
+                                    script.
+                                        document.write(getFormatedDate("#{expense.date}"));
+                                td.expense-item-name #{expense.title} <br/> 
+                                    span #{expense.category}
+                                td.expense-item-value= 'R$ ' + expense.value
+
+
+        script.
+            var expenses = !{JSON.stringify(expenses)};
+            var expensesByDate = {};
+
+            for(let expense of expenses) {
+                let key = getFormatedDate(expense.date);
+
+                if (!expensesByDate[key]) {
+                    expensesByDate[key] = expense.value;
+                } else {
+                    expensesByDate[key] += expense.value;
+                }
+            }
+
+            var expensesByDateSorted = Object.keys(expensesByDate).sort(compareDates).map(key => [key, expensesByDate[key]]);
+
+            var ctx = document.getElementById("expenses-chart");
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: expensesByDateSorted.map(expense => expense[0]),
+                    datasets: [{
+                        label: "Despesa/data",
+                        data: expensesByDateSorted.map(expense => expense[1]),
+                        backgroundColor: 'rgba(255, 99, 132, 0.4)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+
+            });
