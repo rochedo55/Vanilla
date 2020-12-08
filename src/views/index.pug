@@ -2,16 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     <link href="static/css/fontawesome.min.css" rel="stylesheet"> <!--load all styles -->
     <link rel="stylesheet" href="static/css/style.css">
     link(rel="shortcut icon", href="/static/favicon.ico", type="image/x-icon")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous")
+    script(src="/static/js/date.utils.js")
+
     <title>Personal-Finances</title>
 </head>
 <body>
     <div class="container">
         include layouts/header.pug
         include layouts/sidemenu.pug
+        include layouts/modalAddRevenue.pug
+        include layouts/modalAddExpense.pug
 
         <div class="inner">
             <div class="row">
@@ -30,7 +35,7 @@
                     </div>                    
                     <div class="mini-card-body">
                         <label class="mini-card-title">Receitas</label>
-                        <span id="revenuesSum">R$ #{revenuesSum}</span>
+                        <span id="revenuesSum">R$ #{revenuesCurrentMonthSum}</span>
                     </div>                    
                 </div>
                 <div class="mini-card expense">
@@ -39,7 +44,7 @@
                     </div>                    
                     <div class="mini-card-body">
                         <label class="mini-card-title">Despesas</label>
-                        <span id="expensesSum">R$ #{expensesSum}</span>
+                        <span id="expensesSum">R$ #{expensesCurrentMonthSum}</span>
                     </div>                 
                 </div>
                 <div class="mini-card profit">
@@ -48,22 +53,18 @@
                     </div>                    
                     <div class="mini-card-body">
                         <label class="mini-card-title">Balanço</label>
-                        <span id="">R$ 0</span>
+                        <span id="">R$ #{balance}</span>
                     </div>                          
                 </div>
             </div>
             <div class="row">
                 <div class="card">
                     <label class="card-title">Despesas do mês</label>
+                    canvas#expensesCurrentMonth
                 </div>
                 <div class="card">
                     <label class="card-title">Receitas do mês</label>
-                </div>
-                <div class="card">
-                    <label class="card-title">Receitas x Despesas dos últimos 6 meses</label>
-                </div>
-                <div class="card">
-                    <label class="card-title">Frequência de gastos</label>
+                    canvas#revenuesCurrentMonth
                 </div>
             </div>
 
@@ -76,66 +77,84 @@
             <button class="add-expense" onclick="openModalExpense()">
                 <i class="fas fa-receipt"></i>
             </button>
-            
-            <div id="modalAddRevenue" class="modal">
-
-                <div class="modal-content revenue">
-                    <div class="modal-header">
-                        <h2>Adicionar Receita</h2>
-                        <span class="close">&times;</span>
-                    </div>
-                    form(action="/revenues/" method="POST" id="revenueForm")
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <p>Adicione o titulo da receita</p>
-                                <input type="text" id="tituloReceita" name="title" placeholder="Titulo...">
-                            </div>
-                            <div class="form-group">
-                                <p>Adicione o valor da receita</p>
-                                <input type="number" id="valorReceita" name="value" placeholder="Valor...">
-                            </div>
-                            <div class="form-group">
-                                <p>Data da receita</p>
-                                <input type="date" id="dateRevenue" name="date" placeholder="06/12/2020...">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="add" id="btnAddReceita">Adicionar</button>
-                        </div>
-                </div>
-              
-            </div>
-            <div id="modalAddExpense" class="modal">
-
-                <div class="modal-content expense">
-                    <div class="modal-header">
-                        <h2>Adicionar Despesa</h2>
-                        <span class="close">&times;</span>
-                    </div>
-                    form(action="/expenses/" method="POST" id="expenseForm")
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <p>Adicionar o titulo da despesa</p>
-                                <input type="text" id="titleExpense" name="title" placeholder="Titulo...">
-                            </div>
-                            <div class="form-group">
-                                <p>Adicione o valor da despesa</p>
-                                <input type="number" id="valueExpense" name="value" placeholder="Valor...">
-                            </div>
-                            <div class="form-group">
-                                <p>Data da despesa</p>
-                                <input type="date" id="dateExpense" name="date" placeholder="06/12/2020 13:50...">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="add" id="btnAddExpense" type="submit">Adicionar</button>
-                        </div>
-                </div>
-              
-            </div>
         
         </div>
     </div>
     <script src="/static/js/script.js"></script>
+    script.
+        var ctxExpensesCurrentMonth = document.getElementById("expensesCurrentMonth");
+        var ctxRevenuesCurrentMonth = document.getElementById("revenuesCurrentMonth");
+        
+        var expenses = !{JSON.stringify(expensesCurrentMonth)};
+        var revenues = !{JSON.stringify(revenuesCurrentMonth)};
+
+        var expensesByDate = {};
+        var revenuesByDate = {};
+
+        for(let expense of expenses) {
+            let key = getFormatedDate(expense.date);
+
+            if (!expensesByDate[key]) {
+                expensesByDate[key] = expense.value;
+            } else {
+                expensesByDate[key] += expense.value;
+            }
+        }
+
+        for(let revenue of revenues) {
+            let key = getFormatedDate(revenue.date);
+
+            if (!revenuesByDate[key]) {
+                revenuesByDate[key] = revenue.value;
+            } else {
+                revenuesByDate[key] += revenue.value;
+            }
+        }
+
+        var revenuesByDateSorted = Object.keys(revenuesByDate).sort(compareDates).map(key => [key, revenuesByDate[key]]);
+
+        var expensesByDateSorted = Object.keys(expensesByDate).sort(compareDates).map(key => [key, expensesByDate[key]]);
+
+        var expenseChart = new Chart(ctxExpensesCurrentMonth, {
+            type: 'line',
+            data: {
+                labels: expensesByDateSorted.map(expense => expense[0]),
+                datasets: [{
+                    label: "Despesa/data",
+                    data: expensesByDateSorted.map(expense => expense[1]),
+                    backgroundColor: 'rgba(255, 99, 132, 0.4)'
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var revenuesChart = new Chart(ctxRevenuesCurrentMonth, {
+            type: 'line',
+            data: {
+                labels: revenuesByDateSorted.map(revenue => revenue[0]),
+                datasets: [{
+                    label: "Receita por data",
+                    data: revenuesByDateSorted.map(revenue => revenue[1]),
+                    backgroundColor: 'rgba(50, 168, 82, 0.4)'
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
 </body>
 </html>

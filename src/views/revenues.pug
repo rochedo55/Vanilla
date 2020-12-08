@@ -1,14 +1,17 @@
 doctype html  
 html
     head
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
         title Receitas
         link(href="/static/css/fontawesome.min.css" rel="stylesheet")
         link(href="/static/css/style.css" rel="stylesheet")
+        link(rel="shortcut icon", href="/static/favicon.ico", type="image/x-icon")
         script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous")
         script(src="/static/js/date.utils.js")
     body
         include layouts/header.pug
         include layouts/sidemenu.pug
+        include layouts/modalAddRevenue.pug
 
         div.inner
             div.card
@@ -30,7 +33,10 @@ html
                                         document.write(getFormatedDate("#{revenue.date}"));
                                 td.revenue-item-name= revenue.title
                                 td.revenue-item-value= "R$ " + revenue.value 
-        
+
+            button(class="add-transaction revenue" onclick="openModalRevenue()")
+                i.fas.fa-plus
+
         script.
             var revenues = !{JSON.stringify(revenues)};
             var revenuesByDate = {};

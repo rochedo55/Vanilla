@@ -6,7 +6,6 @@ const db = require('./database/connection');
 const router = express.Router();
 
 router.get("/", (req, res) => {
-
     const revenues = db.get("revenues").value();
     const expenses = db.get("expenses").value();
     
@@ -15,14 +14,28 @@ router.get("/", (req, res) => {
     const revenuesCurrentMonth = revenues.filter(revenue => {
         return new Date(revenue.date).getMonth() == today.getMonth()
     });
-    const revenuesSum = revenuesCurrentMonth.reduce((accumulator, revenue) => accumulator + revenue.value, 0);
-
+    
     const expensesCurrentMonth = expenses.filter(expense => {
         return new Date(expense.date).getMonth() == today.getMonth()
     });
-    const expensesSum = expensesCurrentMonth.reduce((accumulator, expense) => accumulator + expense.value, 0);
+
+    const revenuesCurrentMonthSum = revenuesCurrentMonth.reduce((accumulator, revenue) => accumulator + revenue.value, 0);
+    const expensesCurrentMonthSum = expensesCurrentMonth.reduce((accumulator, expense) => accumulator + expense.value, 0);
+
+    const currentMoney = revenuesCurrentMonthSum - expensesCurrentMonthSum;
+
+    const revenuesSum = revenues.reduce((accumulator, revenue) => accumulator + revenue.value, 0);
+    const expensesSum = expenses.reduce((accumulator, expense) => accumulator + expense.value, 0);
+
+    const balance = revenuesSum - expensesSum;
     
-    res.render('index', { revenuesSum, expensesSum, currentMoney: revenuesSum - expensesSum });
+    res.render('index', {
+        revenuesCurrentMonth,
+        expensesCurrentMonth,
+        revenuesCurrentMonthSum, 
+        expensesCurrentMonthSum, 
+        currentMoney, 
+        balance });
 });
 
 router.route('/expenses/')

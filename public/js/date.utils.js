@@ -3,7 +3,9 @@ var months = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OU
 function getFormatedDate(dateStr) {
     let date = new Date(dateStr);
 
-    let newDateFormated = (date.getDate() + 1)+ " " + months[date.getMonth()];
+    date = new Date(date.getTime() + (1000 * 3600 * 24));
+
+    let newDateFormated = (date.getDate())+ " " + months[date.getMonth()];
 
     return newDateFormated;
 }   

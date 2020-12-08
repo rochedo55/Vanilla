@@ -1,6 +1,6 @@
 div.sidemenu
-    ul.sidemenu-options
-        li.item.active
+    ul.sidemenu-options#sidemenuOptions
+        li.item
             a(href="/")
                 i.fas.fa-home
                 Home
@@ -12,3 +12,14 @@ div.sidemenu
             a(href="/revenues/")
                 i.fas.fa-hand-holding-usd
                 Receitas
+
+script.
+    let itens = document.querySelectorAll("#sidemenuOptions li.item");
+
+    if (location.pathname.includes("expenses")) {
+        itens[1].classList.add("active");
+    } else if (location.pathname.includes("revenues")) {
+        itens[2].classList.add("active");
+    } else {
+        itens[0].classList.add("active");
+    }
